@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rookie.opcua.mapper.NodeStructureMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rookie.opcua.entity.NodeStructure">
+        <result column="id" property="id"/>
+        <result column="namespace_index" property="namespaceIndex"/>
+        <result column="identifier" property="identifier"/>
+        <result column="node_class" property="nodeClass"/>
+        <result column="browse_name" property="browseName"/>
+        <result column="display_name" property="displayName"/>
+        <result column="parent_identifier" property="parentIdentifier"/>
+        <result column="level" property="level"/>
+    </resultMap>
+
+
+    <!-- 保存或更新 -->
+    <insert id="saveOrUpdate">
+        INSERT INTO node_structure(
+			id,
+			namespace_index,
+			identifier,
+			node_class,
+			browse_name,
+			display_name,
+			parent_identifier,
+			level) VALUES
+            (
+			#{nodeStructure.id},
+			#{nodeStructure.namespaceIndex},
+			#{nodeStructure.identifier},
+			#{nodeStructure.nodeClass},
+			#{nodeStructure.browseName},
+			#{nodeStructure.displayName},
+			#{nodeStructure.parentIdentifier},
+			#{nodeStructure.level}
+		)ON duplicate KEY UPDATE
+			namespace_index = VALUES(namespace_index),
+			identifier = VALUES(identifier),
+			browse_name = VALUES(browse_name),
+			display_name = VALUES(display_name),
+			parent_identifier = VALUES(parent_identifier),
+			level = VALUES(level)
+    </insert>
+
+    <!-- 批量保存 -->
+    <insert id="batchSave">
+        INSERT INTO node_structure(
+        id,
+        namespace_index,
+        identifier,
+        node_class,
+        browse_name,
+        display_name,
+        parent_identifier,
+        level) VALUES
+        <foreach collection="nodeStructureList" item="nodeStructure" separator=",">
+            (
+            #{nodeStructure.id},
+            #{nodeStructure.namespaceIndex},
+            #{nodeStructure.identifier},
+            #{nodeStructure.nodeClass},
+            #{nodeStructure.browseName},
+            #{nodeStructure.displayName},
+            #{nodeStructure.parentIdentifier},
+            #{nodeStructure.level}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 批量保存或更新 -->
+    <insert id="batchSaveOrUpdate">
+        INSERT INTO node_structure(
+        id,
+        namespace_index,
+        identifier,
+        node_class,
+        browse_name,
+        display_name,
+        parent_identifier,
+        level) VALUES
+        <foreach collection="nodeStructureList" item="nodeStructure" separator=",">
+            (
+            #{nodeStructure.id},
+            #{nodeStructure.namespaceIndex},
+            #{nodeStructure.identifier},
+            #{nodeStructure.nodeClass},
+            #{nodeStructure.browseName},
+            #{nodeStructure.displayName},
+            #{nodeStructure.parentIdentifier},
+            #{nodeStructure.level}
+            )
+        </foreach>
+        ON duplicate KEY UPDATE
+        namespace_index = VALUES(namespace_index),
+        identifier = VALUES(identifier),
+        node_class = VALUES(node_class),
+        browse_name = VALUES(browse_name),
+        display_name = VALUES(display_name),
+        parent_identifier = VALUES(parent_identifier),
+        level = VALUES(level)
+    </insert>
+
+    <select id="selectAll" resultType="com.rookie.opcua.entity.NodeStructure">
+		select * from node_structure
+	</select>
+</mapper>

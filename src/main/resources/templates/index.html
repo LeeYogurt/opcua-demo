@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <base th:href="${#request.getContextPath()}">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+    <template>
+        <el-tag>{{title}}</el-tag>
+        <el-table :data="simulationDTOList"
+                  border
+                  style="width: 100%">
+            <el-table-column
+                    prop="counter"
+                    label="计数器">
+            </el-table-column>
+            <el-table-column
+                    prop="expression"
+                    label="表达式">
+            </el-table-column>
+            <el-table-column
+                    prop="random"
+                    label="随机数">
+            </el-table-column>
+            <el-table-column
+                    prop="sawtooth"
+                    label="转速">
+            </el-table-column>
+            <el-table-column
+                    prop="sinusoid"
+                    label="正弦曲线值">
+            </el-table-column>
+            <el-table-column
+                    prop="square"
+                    label="Square">
+            </el-table-column>
+            <el-table-column
+                    prop="triangle"
+                    label="Triangle">
+            </el-table-column>
+        </el-table>
+        </table>
+
+    </template>
+</div>
+</body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    let app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                title: 'WebSocket 通讯 OpcUa数据',
+                path: "ws://localhost:20000/websocket",
+                socket: "",
+                simulationDTOList: [
+                    {
+                        counter: '',
+                        expression: '',
+                        random: '',
+                        sawtooth: '',
+                        sinusoid: '',
+                        square: '',
+                        triangle: ''
+                    }
+                ],
+                simulationDTO1: {}
+            };
+        },
+        mounted() {
+            this.init()
+        },
+        methods: {
+            init: function () {
+                if (typeof (WebSocket) === "undefined") {
+                    alert("您的浏览器不支持socket")
+                } else {
+                    // 实例化socket
+                    this.socket = new WebSocket(this.path)
+                    // 监听socket连接
+                    this.socket.onopen = this.open
+                    // 监听socket错误信息
+                    this.socket.onerror = this.error
+                    // 监听socket消息
+                    this.socket.onmessage = this.getMessage
+                }
+            },
+            open: function () {
+                console.log("socket连接成功")
+            },
+            error: function () {
+                console.log("连接错误")
+            },
+            getMessage: function (msg) {
+                // console.log("getMessage:" + msg.data)
+                this.simulationDTOList = JSON.parse(msg.data);
+            },
+            send: function () {
+                this.socket.send(params)
+            },
+            close: function () {
+                console.log("socket已经关闭")
+            }
+        },
+        destroyed() {
+            // 销毁监听
+            this.socket.onclose = this.close
+        }
+    });
+
+</script>
+</html>
