@@ -1,4 +1,4 @@
-# rookie-opcua
+# opcua-demo
 OPC-UA统一架构通信协议  
 基于upc-ua通讯协议与硬件网关通讯demo，java程序为客户端  
 使用opc-ua的调试服务器工具模拟进行调试  
