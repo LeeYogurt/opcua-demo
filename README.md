@@ -11,6 +11,3 @@ OPC-UA统一架构通信协议
 注册账号才可以下载相关的资源  
 
 [模拟器及相关资料某云盘地址](https://pan.baidu.com/s/1OhxMC3CSXQYAx9ydg7PRyA) 提取码: mj4f  
-
-通信的硬件数据结构需要提前耐心看相关资料文档
-[CSDN 博客 OPCUA标准java实现 Milo库](https://blog.csdn.net/q932104843/article/details/86664236)
